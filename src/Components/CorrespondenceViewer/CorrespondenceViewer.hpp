@@ -86,7 +86,7 @@ protected:
     Base::DataStreamIn<pcl::PointCloud<pcl::PointXYZRGB>::Ptr> in_trg_cloud_xyzrgb;
 	Base::DataStreamIn<pcl::CorrespondencesPtr> in_correspondences;
 	Base::DataStreamIn<pcl::CorrespondencesPtr> in_good_correspondences;
-	Base::DataStreamIn<std::vector<pcl::Correspondences> > in_clustered_correspondences;
+    Base::DataStreamIn<std::vector<pcl::CorrespondencesPtr> > in_clustered_correspondences;
 	// Output data streams
 
 	// Handlers
@@ -143,7 +143,7 @@ protected:
 	pcl::CorrespondencesPtr correspondences;
 	pcl::CorrespondencesPtr good_correspondences;
 
-	std::vector<pcl::Correspondences> clustered_corrs;
+    std::vector<pcl::CorrespondencesPtr> clustered_corrs;
 
 	/// Property: name of the window.
     Base::Property<std::string> prop_title;

@@ -191,8 +191,10 @@ void CorrespondenceViewer::on_clouds() {
 
     // Read clouds from ports.
     src_cloud_xyzrgb = in_src_cloud_xyzrgb.read();
+    //if(!in_trg_cloud_xyzrgb.empty())
     trg_cloud_xyzrgb = in_trg_cloud_xyzrgb.read();
     src_cloud_xyzsift = in_src_cloud_xyzsift.read();
+    //if(!in_trg_cloud_xyzsift.empty())
     trg_cloud_xyzsift = in_trg_cloud_xyzsift.read();
 
     // Define translation between clouds.
@@ -382,14 +384,14 @@ void CorrespondenceViewer::displayCorrespondences(){
                 CLOG(LTRACE) << "Less than "<< display_cluster+1 << " clusters! Displaying cluster 0";
                 display_cluster_ = 0;
             }
-            viewer->addCorrespondences<PointXYZSIFT>(trg_cloud_xyzsifttrans, src_cloud_xyzsift, clustered_corrs[display_cluster_], "correspondences0") ;
+            viewer->addCorrespondences<PointXYZSIFT>(trg_cloud_xyzsifttrans, src_cloud_xyzsift, *(clustered_corrs[display_cluster_]), "correspondences0") ;
             viewer->setShapeRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR,r,g,b, "correspondences0") ;
             //Display Bounding Box
             if(display_bounding_box){
                 CLOG(LTRACE) << "CorrespondenceViewer Display Bounding Box";
                 vector<int> indices;
-                for(int i = 0; i < clustered_corrs[display_cluster_].size(); i++){
-                    indices.push_back(clustered_corrs[display_cluster_][i].index_match);
+                for(int i = 0; i < clustered_corrs[display_cluster_]->size(); i++){
+                    indices.push_back(clustered_corrs[display_cluster_]->at(i).index_match);
                 }
                 Eigen::Vector4f min_pt, max_pt;
                 pcl::getMinMax3D(*src_cloud_xyzsift, indices, min_pt, max_pt);
@@ -412,14 +414,14 @@ void CorrespondenceViewer::displayCorrespondences(){
                 ostringstream ss;
                 ss << i;
                 string str = ss.str();
-                viewer->addCorrespondences<PointXYZSIFT>(trg_cloud_xyzsifttrans, src_cloud_xyzsift, clustered_corrs[i], "correspondences"+str) ;
+                viewer->addCorrespondences<PointXYZSIFT>(trg_cloud_xyzsifttrans, src_cloud_xyzsift, *(clustered_corrs[i]), "correspondences"+str) ;
                 viewer->setShapeRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, r, g, b, "correspondences"+str) ;
                 //Display Bounding Box
                 if(display_bounding_box){
                     CLOG(LTRACE) << "CorrespondenceViewer Display Bounding Box";
                     vector<int> indices;
-                    for(int j = 0; j < clustered_corrs[i].size(); j++){
-                        indices.push_back(clustered_corrs[i][j].index_match);
+                    for(int j = 0; j < clustered_corrs[i]->size(); j++){
+                        indices.push_back(clustered_corrs[i]->at(j).index_match);
                     }
                     Eigen::Vector4f min_pt, max_pt;
                     pcl::getMinMax3D(*src_cloud_xyzsift, indices, min_pt, max_pt);
